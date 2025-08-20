@@ -1,0 +1,18 @@
+#!/bin/bash
+
+sudo apt -y install ninja-build gettext cmake curl build-essential git
+sudo apt -y install lua5.1 liblua5.1-0-dev luarocks
+# PeekNvim dependency
+curl -fsSL https://deno.land/install.sh | sh
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+
+git clone https://github.com/neovim/neovim $HOME/neovim
+cd ~/neovim
+
+git -C ~/neovim fetch --all
+git -C ~/neovim checkout $version
+
+make -C ~/neovim clean
+make -C ~/neovim CMAKE_BUILD_TYPE=RelWithDebInfo
+sudo make -C ~/neovim install

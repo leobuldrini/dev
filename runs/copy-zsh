@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Copy the zsh config files to the home directory
+
+cp ~/dotfiles/zsh/.config/zsh/.zshrc ~/.zshrc
+cp ~/dotfiles/zsh/.config/zsh/.zshenv ~/.zshenv

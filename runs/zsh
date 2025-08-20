@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# Pula se for macOS
+case "$OSTYPE" in
+  darwin*)
+    echo "macOS detectado."
+    exit 0
+    ;;
+esac
+
+# Detecta a distribuição Linux
+if [[ -f /etc/os-release ]]; then
+  . /etc/os-release
+  DISTRO=$ID
+elif [[ -f /etc/arch-release ]]; then
+  DISTRO="arch"
+elif [[ -f /etc/debian_version ]]; then
+  DISTRO="ubuntu"
+else
+  echo "Distribuição não identificada"
+  exit 1
+fi
+
+# Instala zsh baseado na distribuição
+case $DISTRO in
+  "ubuntu"|"debian")
+    echo "Ubuntu/Debian detectado. Instalando zsh com apt..."
+    sudo apt update
+    sudo apt install -y zsh
+    ;;
+  "arch"|"manjaro")
+    echo "Arch Linux detectado. Instalando zsh..."
+    # Tenta usar yay primeiro, se não tiver usa pacman
+    if command -v yay &> /dev/null; then
+      yay -S --noconfirm --needed zsh
+    else
+      sudo pacman -S --noconfirm --needed zsh
+    fi
+    ;;
+  *)
+    echo "Distribuição '$DISTRO' não suportada por este script"
+    echo "Por favor, instale o zsh manualmente"
+    exit 1
+    ;;
+esac
+
+echo "zsh instalado com sucesso!"
+
+hash -r
+sudo chsh -s $(which zsh) $USER
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+cd $ZSH_CUSTOM/plugins && git clone https://github.com/chrissicool/zsh-256color
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+rm .zshrc
+rm .zshenv
+ln -sr .config/zsh/.zshrc .zshrc
+ln -sr .config/zsh/.zshenv .zshenv
+source ~/.zshrc
+rm .zshrc.pre-oh-my-zsh

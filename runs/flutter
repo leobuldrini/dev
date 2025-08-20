@@ -1,0 +1,50 @@
+#!/bin/bash
+
+mkdir -p ~/SDKs
+
+case "$OSTYPE" in
+  darwin*)
+    echo "macOS detectado."
+    curl https://storage.googleapis.com/flutter_infra_release/releases/stable/macos/flutter_macos_3.35.1-stable.zip -o ~/flutter_sdk.zip
+    unzip ~/flutter_sdk.zip -d ~/SDKs/
+    rm ~/flutter_sdk.zip
+    exit 0
+    ;;
+esac
+
+# Detecta a distribuição Linux
+if [ -f /etc/os-release ]; then
+  . /etc/os-release
+  echo "Distribuição: $ID"
+  DISTRO=$ID
+elif [ -f /etc/arch-release ]; then
+  DISTRO="arch"
+elif [ -f /etc/debian_version ]; then
+  DISTRO="ubuntu"
+else
+  echo "Distribuição não identificada"
+  exit 1
+fi
+
+echo "DISTRO detectado: $DISTRO"
+
+case $DISTRO in
+  "ubuntu"|"debian")
+    echo "Ubuntu/Debian detectado. Instalando flutter..."
+    curl https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.35.1-stable.tar.xz -o ~/flutter_sdk.tar.xz
+    tar -xf ~/flutter_sdk.tar.xz -C ~/SDKs/
+    rm ~/flutter_sdk.tar.xz
+    ;;
+  "arch"|"manjaro")
+    echo "Arch Linux detectado. Instalando flutter..."
+    curl https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.35.1-stable.tar.xz -o ~/flutter_sdk.tar.xz
+    tar -xf ~/flutter_sdk.tar.xz -C ~/SDKs/
+    rm ~/flutter_sdk.tar.xz
+    ;;
+esac
+
+echo 'export PATH="$HOME/SDKs/flutter/bin:$PATH"' >> ~/.zshenv
+echo "Flutter instalado com sucesso! Executando 'source ~/.zshenv' para que as alterações tenham efeito."
+source ~/.zshenv
+flutter upgrade
+flutter doctor

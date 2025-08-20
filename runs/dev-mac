@@ -1,0 +1,8 @@
+#!/bin/bash
+
+brew install --formulae clang-format cmake direnv ffmpeg fzf gcc go golang-migrate jq llvm neovim numpy nvm pipx ripgrep sqlc tmux tree-sitter
+brew install zoxide glow stow
+brew install ascii-image-converter chafa tldr
+go install github.com/air-verse/air@latest
+
+
