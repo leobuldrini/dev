@@ -148,7 +148,7 @@ function flutter-start() {
 function connect() {
     case $1 in
         "matchmaking")
-            sudo ssh -i $MM_PEM_DIR $MM_SERVER ;;
+            ssh -i $MM_PEM_DIR $MM_SERVER ;;
         "ubuntu-server")
             ssh -i $PERSONAL_PEM_DIR $PERSONAL_SERVER ;;
         *)
