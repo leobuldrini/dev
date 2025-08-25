@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sudo apt -y update
-sudo apt -y install clang-format cmake direnv fzf gcc golang-go jq ripgrep unzip
+sudo apt -y install clang-format cmake direnv fzf gcc golang-go jq ripgrep unzip tmux
 sudo apt -y install zoxide stow
 sudo apt -y install tldr
 go install github.com/air-verse/air@latest

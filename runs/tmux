@@ -1,0 +1,36 @@
+#!/bin/bash
+
+case "$OSTYPE" in
+  darwin*)
+    echo "macOS detectado."
+    brew install tmux
+    ;;
+  linux*)
+    # Detecta a distribuição Linux
+    if [ -f /etc/os-release ]; then
+      . /etc/os-release
+      echo "Distribuição: $ID"
+      DISTRO=$ID
+    elif [ -f /etc/arch-release ]; then
+      DISTRO="arch"
+    elif [ -f /etc/debian_version ]; then
+      DISTRO="ubuntu"
+    else
+      echo "Distribuição não identificada"
+      exit 1
+    fi
+    echo "DISTRO detectado: $DISTRO"
+    case $DISTRO in
+      "ubuntu"|"debian")
+        sudo apt install -y tmux
+        ;;
+      "arch"|"manjaro")
+        sudo pacman -S --noconfirm --needed tmux
+        ;;
+    esac
+    ;;
+esac
+
+# Instala o TPM
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
