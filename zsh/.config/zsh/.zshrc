@@ -117,7 +117,8 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 export NVM_DIR="$HOME/.nvm"
-
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 function flutter-watch() {
     tmux send-keys "flutter run $1 $2 $3 $4 $5 $6 $7 $8 $9 $10 --pid-file=/tmp/tf1.pid" C-m \; \

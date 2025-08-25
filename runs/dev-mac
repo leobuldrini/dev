@@ -4,5 +4,3 @@ brew install --formulae clang-format cmake direnv ffmpeg fzf gcc go golang-migra
 brew install zoxide glow stow
 brew install ascii-image-converter chafa tldr
 go install github.com/air-verse/air@latest
-
-

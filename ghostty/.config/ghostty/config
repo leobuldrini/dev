@@ -45,7 +45,7 @@
 font-family = JetBrainsMono Nerd Font
 theme = rose-pine-moon
 # background = 000000
-background-opacity = 0.85
+background-opacity = 0.95
 background-blur = true
 shell-integration-features = no-cursor,no-sudo,no-title
 gtk-titlebar = false
